@@ -20,6 +20,9 @@ inputs:
   options:
     description: "The options that should be passed as arguments to the lane. The options should be serialized as a JSON object."
     required: false
+  env:
+    description: "The --env argument to use when running the lane."
+    required: false
 runs:
   using: node12
   main: main.js

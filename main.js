@@ -10,6 +10,7 @@ function run() {
         const subdirectory = core.getInput('subdirectory', { required: false });
         const bundleInstallPath = core.getInput('bundle-install-path', { required: false });
         const skipTracking = core.getInput('skip-tracking', { required: false });
+        const envInput = core.getInput('env', { required: false });
 
         console.log(`Executing lane ${lane} on ${process.env.RUNNER_OS}.`);
 
@@ -63,12 +64,18 @@ function run() {
             }
         }
 
-        let fastlaneExecutionResult;
-        if (fastlaneOptions.length === 0) {
-            fastlaneExecutionResult = shell.exec(`${fastlaneCommand} ${lane}`);
-        } else {
-            fastlaneExecutionResult = shell.exec(`${fastlaneCommand} ${lane} ${fastlaneOptions.join(" ")}`);
+        let fastlaneOptionsArg = "";        
+        if (fastlaneOptions.length !== 0) {
+            fastlaneOptionsArg = fastlaneOptions.join(" ")
         }
+
+        let fastlaneEnvArg = "";
+        if (envInput) {
+            fastlaneEnvArg = `--env ${optionsEnv}`
+        }
+
+        let fastlaneExecutionResult;
+        fastlaneExecutionResult = shell.exec(`${fastlaneCommand} ${lane} ${fastlaneEnvArg} ${fastlaneOptionsArg}`);
 
         if (fastlaneExecutionResult.code !== 0) {
             setFailed(new Error(`Executing lane ${lane} failed.`));
