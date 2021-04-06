@@ -71,7 +71,7 @@ function run() {
 
         let fastlaneEnvArg = "";
         if (envInput) {
-            fastlaneEnvArg = `--env ${optionsEnv}`
+            fastlaneEnvArg = `--env ${envInput}`
         }
 
         let fastlaneExecutionResult;
